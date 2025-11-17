@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/Mkanda/Development/flutter/packages/flutter_tools/gradle/src/main/scripts/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/Mkanda/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/Mkanda/Documents/oil-connect/Project_x/Project_x/android/app/.cxx/debug/4q212x73/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/Mkanda/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/Mkanda/Documents/oil-connect/Project_x/Project_x/android/app/.cxx/debug/4q212x73/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

@@ -1,0 +1,104 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    def keystoreProperties = new Properties()
+    def keystorePropertiesFile = rootProject.file("key.properties")
+
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    }
+
+    namespace "com.africom.oil_connect"
+    compileSdk 36
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.africom.oil_connect"
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion 35
+        versionCode 8
+        versionName "1.0.2"
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source "../.."
+}
+
+// Ensure APK is copied to Flutter's expected location
+afterEvaluate {
+    tasks.register("copyApkToFlutterLocation") {
+        doLast {
+            def flutterApkDir = file("${project.rootDir}/../build/app/outputs/flutter-apk")
+            def androidApkDir = layout.buildDirectory.dir("outputs/flutter-apk").get().asFile
+
+            if (androidApkDir.exists()) {
+                flutterApkDir.mkdirs()
+                copy {
+                    from(androidApkDir)
+                    into(flutterApkDir)
+                    include("*.apk")
+                }
+                println("✅ APK copied to Flutter's expected location: ${flutterApkDir.absolutePath}")
+            }
+        }
+    }
+
+    tasks.findByName("assembleRelease")?.finalizedBy("copyApkToFlutterLocation")
+    tasks.findByName("assembleDebug")?.finalizedBy("copyApkToFlutterLocation")
+}
+
+// Ensure AAB is copied to Flutter's expected location
+afterEvaluate {
+    tasks.register("copyAabToFlutterLocation") {
+        doLast {
+            def flutterApkDir = file("${project.rootDir}/../build/app/outputs/flutter-apk")
+            def androidAabDir = layout.buildDirectory.dir("outputs/bundle/release").get().asFile
+
+            if (androidAabDir.exists()) {
+                flutterApkDir.mkdirs()
+                copy {
+                    from(androidAabDir)
+                    into(flutterApkDir)
+                    include("*.aab")
+                }
+                println("✅ AAB copied to Flutter's expected location: ${flutterApkDir.absolutePath}")
+            }
+        }
+    }
+
+    // Run copy task after bundleRelease is executed
+    tasks.findByName("bundleRelease")?.finalizedBy("copyAabToFlutterLocation")
+}
+

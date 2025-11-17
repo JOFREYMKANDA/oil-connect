@@ -1,0 +1,45 @@
+class AppConstants {
+  static const String kGoogleApiKey = "AIzaSyCkV7CBL4IbYTvQaabyX--La9GFQLUHGpE";
+
+  static const String login = 'login';
+  static const String registerAs = 'register_as';
+  static const String verification = 'verification';
+  static const String enterPhoneNumber = 'enter_phone_number';
+  static const String fillCredentials = 'fill_credentials';
+  static const String enterCode = 'enter_code';
+  static const String selectWhatToDo = 'select_what_to_do';
+  static const String continueText = 'continue';
+  static const String contactSupport = 'contact_support';
+  static const String add = 'add';
+  static const String next = 'OK';
+  static const String truckOwner = 'truck_owner';
+  static const String customer = 'customer';
+  static const String register = 'register';
+  static const String dontHaveAccount = "don't_have_account";
+  static const String signIn = 'sign_up';
+  static const String alreadyHaveAccount = 'already_have_account';
+  static const String loginLabel = 'login_label';
+  static const String createAccount = 'create_account';
+  static const String enterPhone = 'enter_phone';
+  static const String projectName = 'project_name';
+  static const String truckRegistration = 'truck_registration';
+  static const String driverRegistration = 'driver_registration';
+  static const String stationRegistration = 'Station Registration';
+  static const String registerStation = 'Register_station';
+  static const String searchStation = 'Search your station';
+  static const String selectDestination = 'Select_Destination_Station';
+  static const String resendCode = 'resend_code';
+  static const String seconds = 'seconds';
+  static const String resend = 'resend';
+  static const String addTruck = 'add_truck';
+  static const String drivers = 'drivers';
+  static const String truckStatus = 'truck_status';
+  static const String onDelivery = 'on_delivery';
+  static const String history = 'history';
+  static const String newRequest = 'new_request';
+  static const String vehicleModel = 'vehicle_model';
+  static const String vehicleColor = 'vehicle_color';
+  static const String color = 'color';
+  static const String vehicleType = 'vehicle_type';
+  static const String fuelType = 'fuel_type';
+}

@@ -1,0 +1,2 @@
+C:/Users/user/OneDrive/Desktop/oil-connect/Project_x/Project_x/android/app/.cxx/RelWithDebInfo/s2044l4n/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/user/OneDrive/Desktop/oil-connect/Project_x/Project_x/android/app/.cxx/RelWithDebInfo/s2044l4n/armeabi-v7a/CMakeFiles/rebuild_cache.dir

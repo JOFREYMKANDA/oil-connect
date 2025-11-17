@@ -1,0 +1,2 @@
+C:/Users/user/OneDrive/Desktop/oil-connect/Project_x/Project_x/android/app/.cxx/RelWithDebInfo/67x272p5/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/user/OneDrive/Desktop/oil-connect/Project_x/Project_x/android/app/.cxx/RelWithDebInfo/67x272p5/x86_64/CMakeFiles/rebuild_cache.dir

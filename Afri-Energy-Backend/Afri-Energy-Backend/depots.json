@@ -1,0 +1,60 @@
+[
+  {
+    "depot": "Dar",
+    "sources": [
+      {
+        "name": "Kurasini",
+        "companies": [
+          { "name": "Camel Oil (T) Ltd", "latitude": -6.85495, "longitude": 39.28453 },
+          { "name": "Engen PETROLEUM (T) Ltd", "latitude": -6.84772, "longitude": 39.29237 },
+          { "name": "GAPCO (T) Ltd", "latitude": -6.83459, "longitude": 39.28446 },
+          { "name": "GBP (T) Ltd", "latitude": -6.84799, "longitude": 39.28727 },
+          { "name": "MOGAS (T) Ltd", "latitude": -6.86190, "longitude": 39.28791 },
+          { "name": "National Oil (T) Ltd", "latitude": -6.86111, "longitude": 39.28198 },
+          { "name": "Oilcom (T) Ltd", "latitude": -6.84407, "longitude": 39.29469 },
+          { "name": "ORYX Oil Ltd", "latitude": -6.84477, "longitude": 39.29599 },
+          { "name": "PUMA Energy (T) Ltd", "latitude": -6.83065, "longitude": 39.28344 },
+          { "name": "Total (T) Ltd", "latitude": -6.83617, "longitude": 39.28139 },
+          { "name": "Star Oil (T) Ltd", "latitude": -6.85490, "longitude": 39.29565 }
+        ]
+      },
+      {
+        "name": "Kigamboni",
+        "companies": [
+          { "name": "Hass Petroleum Ltd", "latitude": -6.84548, "longitude": 39.31342 },
+          { "name": "Kobil (T) Ltd", "latitude": -6.2090, "longitude": 39.30408 },
+          { "name": "Lake Oil Ltd", "latitude": -6.84386, "longitude": 39.31455 },
+          { "name": "MOIL", "latitude": -6.8500, "longitude": 39.3108 },
+          { "name": "Sahara (T) Ltd", "latitude": -6.848338, "longitude": 39.31028 },
+          { "name": "World Oil Ltd", "latitude": -6.84725, "longitude": 39.31256 },
+          { "name": "TIPER", "latitude": -6.84365, "longitude": 39.31140 }
+        ]
+      }
+    ]
+  },
+  {
+    "depot": "Tanga",
+    "sources": [
+      {
+        "name": "Tanga",
+        "companies": [
+          { "name": "GBP (T) Ltd", "latitude": -5.0675, "longitude": 39.12257 },
+          { "name": "TSN Oil (T) Ltd", "latitude": -5.74398, "longitude": 39.05696 }
+        ]
+      }
+    ]
+  },
+  {
+    "depot": "Mtwara",
+    "sources": [
+      {
+        "name": "Mtwara",
+        "companies": [
+          { "name": "GM & Co. T", "latitude": -10.27431, "longitude": 40.20666 },
+          { "name": "Oilcom (T) Ltd - Mtwara", "latitude": -10.27975, "longitude": 40.20821 }
+        ]
+      }
+     
+    ]
+  }
+]

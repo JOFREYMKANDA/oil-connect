@@ -1,0 +1,2 @@
+/Users/Mkanda/Documents/oil-connect/Project_x/Project_x/android/app/.cxx/debug/4q212x73/x86_64/CMakeFiles/edit_cache.dir
+/Users/Mkanda/Documents/oil-connect/Project_x/Project_x/android/app/.cxx/debug/4q212x73/x86_64/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,12 @@
+node_modules/
+
+# Ignore environment files
+# .env
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore IDE configurations
+.vscode/
+.idea/
