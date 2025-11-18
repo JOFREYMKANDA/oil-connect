@@ -32,6 +32,7 @@ class _DriverScreenState extends State<DriverScreen> {
   String? _lastDrawnOrderId;
   bool _isMapReady = false;
   bool _isDetailsExpanded = false;
+  bool isCompleting = false; // controls loading state
 
   double _getContainerHeight() {
     return _isDetailsExpanded ? MediaQuery.of(context).size.height * 0.6 : 120;
@@ -735,7 +736,7 @@ class _DriverScreenState extends State<DriverScreen> {
 
                                     const SizedBox(height: 16),
 
-                                    // Action buttons
+                                    // Completed Delivery & Call Customer Buttons
                                     Container(
                                       height: 52,
                                       decoration: BoxDecoration(
@@ -750,40 +751,47 @@ class _DriverScreenState extends State<DriverScreen> {
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: ElevatedButton(
-                                        onPressed: () async {
-                                          if (mainOrder != null) {
-                                            final status =
-                                                mainOrder.status.toLowerCase();
-                                            if (status == "assigned") {
-                                              await orderController
-                                                  .startDelivery(mainOrder.orderId);
-                                            } else if (status == "ondelivery") {
-                                              final success = await orderController
-                                                  .finishDelivery(mainOrder.orderId);
-                                              if (success) {
-                                                Get.snackbar(
-                                                  "Success",
-                                                  "Order completed successfully!",
-                                                  snackPosition: SnackPosition.BOTTOM,
-                                                  backgroundColor: Colors.green,
-                                                  colorText: Colors.white,
-                                                  duration:
-                                                      const Duration(seconds: 3),
-                                                );
-                                              } else {
-                                                Get.snackbar(
-                                                  "Error",
-                                                  "Failed to complete order. Please try again.",
-                                                  snackPosition: SnackPosition.BOTTOM,
-                                                  backgroundColor: Colors.red,
-                                                  colorText: Colors.white,
-                                                  duration:
-                                                      const Duration(seconds: 3),
-                                                );
-                                              }
-                                            }
-                                          }
-                                        },
+                                        onPressed: isCompleting
+                                            ? null // disable while loading
+                                            : () async {
+                                                if (orderController.assignedOrders.isEmpty) return;
+                                                final mainOrder = orderController.assignedOrders.first;
+
+                                                setState(() => isCompleting = true);
+
+                                                final status = mainOrder.status.toLowerCase();
+
+                                                if (status == "assigned") {
+                                                  await orderController.startDelivery(mainOrder.orderId);
+                                                  // Update status locally for UI
+                                                  setState(() => mainOrder.status = "ondelivery");
+                                                } else if (status == "ondelivery") {
+                                                  final success =
+                                                      await orderController.finishDelivery(mainOrder.orderId);
+                                                  if (success) {
+                                                    Get.snackbar(
+                                                      "Success",
+                                                      "Order completed successfully!",
+                                                      snackPosition: SnackPosition.BOTTOM,
+                                                      backgroundColor: Colors.green,
+                                                      colorText: Colors.white,
+                                                      duration: const Duration(seconds: 3),
+                                                    );
+                                                    setState(() => mainOrder.status = "completed");
+                                                  } else {
+                                                    Get.snackbar(
+                                                      "Error",
+                                                      "Failed to complete order. Please try again.",
+                                                      snackPosition: SnackPosition.BOTTOM,
+                                                      backgroundColor: Colors.red,
+                                                      colorText: Colors.white,
+                                                      duration: const Duration(seconds: 3),
+                                                    );
+                                                  }
+                                                }
+
+                                                setState(() => isCompleting = false);
+                                              },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.transparent,
                                           shadowColor: Colors.transparent,
@@ -791,33 +799,43 @@ class _DriverScreenState extends State<DriverScreen> {
                                             borderRadius: BorderRadius.circular(14),
                                           ),
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              mainOrder?.status.toLowerCase() ==
-                                                      "assigned"
-                                                  ? Icons.play_arrow_rounded
-                                                  : Icons.check_circle_rounded,
-                                              color: Colors.white,
-                                              size: 20,
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              mainOrder?.status.toLowerCase() ==
-                                                      "assigned"
-                                                  ? "Start Delivery"
-                                                  : "Complete Delivery",
-                                              style: GoogleFonts.inter(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 15,
+                                        child: isCompleting
+                                            ? const SizedBox(
+                                                height: 24,
+                                                width: 24,
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 3,
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            : Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    orderController.assignedOrders.isNotEmpty &&
+                                                            orderController.assignedOrders.first.status.toLowerCase() == "assigned"
+                                                        ? Icons.play_arrow_rounded
+                                                        : Icons.check_circle_rounded,
+                                                    color: Colors.white,
+                                                    size: 20,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    orderController.assignedOrders.isNotEmpty &&
+                                                            orderController.assignedOrders.first.status.toLowerCase() == "assigned"
+                                                        ? "Start Delivery"
+                                                        : "Complete Delivery",
+                                                    style: GoogleFonts.inter(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
                                       ),
                                     ),
+
                                     const SizedBox(
                                       height: 8,
                                     ),

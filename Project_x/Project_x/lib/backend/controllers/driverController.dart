@@ -213,9 +213,12 @@ class DriverOrderController extends GetxController {
 
   /// ✅ Filter based on selected status
   void filterOrders() {
-    if (selectedFilter.value == "All") {
+    if (selectedFilter.value == "Completed") {
       filteredOrders.assignAll(assignedOrders);
-    } else {
+    }
+    else if (selectedFilter.value.isNotEmpty) {} 
+
+   else {
       filteredOrders.assignAll(
         assignedOrders.where((order) =>
         order.status.toLowerCase() ==

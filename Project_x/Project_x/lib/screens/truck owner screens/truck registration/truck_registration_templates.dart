@@ -10,6 +10,7 @@ import 'package:oil_connect/backend/controllers/vehicleController.dart';
 import 'package:oil_connect/screens/truck%20owner%20screens/truck%20registration/pages/success_screen.dart';
 import 'package:oil_connect/utils/colors.dart';
 import 'package:oil_connect/utils/constants.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class CarRegistrationTemplate extends StatefulWidget {
   const CarRegistrationTemplate({super.key});
@@ -370,6 +371,7 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                     });
                   },
                 ),
+                
                 const SizedBox(height: 24),
 
                 // Tank Capacity Section
@@ -378,11 +380,11 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                 Row(
                   children: [
                     // Tank Capacity TextField
-                    Expanded(
-                      flex: 2,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7,
                       child: _buildTextField(
                         controller: tankCapacityController,
-                        label: "Tank Capacity (Liters)",
+                        label: "Tank Capacity (L)",
                         hint: "Enter capacity",
                         isRequired: true,
                         keyboardType: TextInputType.number,
@@ -399,17 +401,16 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                         suffixText: "L",
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
                     // Compartments Dropdown
-                    Expanded(
-                      flex: 1,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3 - 56,
                       child: _buildDropdown<int>(
                         value: selectedCompartments,
                         items: compartmentOptions.map((count) => DropdownMenuItem(
                           value: count,
                           child: Text("$count"),
                         )).toList(),
-                        hint: "Compartments",
                         onChanged: (value) {
                           if (value != null) {
                             _updateCompartments(value);
@@ -420,6 +421,8 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                   ],
                 ),
                 const SizedBox(height: 16),
+
+                const Text("Enter capacities for each compartment (L):"),
                 // Compartment Capacity Fields
                 ...List.generate(selectedCompartments, (index) {
                   return Padding(
@@ -766,59 +769,75 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
   }
 
   Widget _buildDropdown<T>({
-    required T? value,
-    required List<DropdownMenuItem<T>> items,
-    required String hint,
-    required void Function(T?) onChanged,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xFF2A2A2A)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? const Color(0xFF3A3A3A)
-              : const Color(0xFFE1E5E9),
-        ),
+  required T? value,
+  required List<DropdownMenuItem<T>> items,
+  String? hint,
+  required void Function(T?) onChanged,
+}) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+  
+  return Container(
+    decoration: BoxDecoration(
+      color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(
+        color: value != null 
+            ? AppColors.rectangleColor.withOpacity(0.5)
+            : isDark ? const Color(0xFF404040) : const Color(0xFFE5E5E5),
+        width: 1.2,
       ),
-      child: DropdownButtonFormField<T>(
-        initialValue: value,
+    ),
+    child: DropdownButtonHideUnderline(
+      child: DropdownButton2<T>(
+        value: value,
         items: items,
-        hint: Text(
+        hint: hint != null ? Text(
           hint,
           style: GoogleFonts.inter(
-            fontSize: 16,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.white60
-                : const Color(0xFF999999),
+            fontSize: 15,
+            color: isDark ? Colors.white54 : const Color(0xFF888888),
           ),
-        ),
+        ) : null,
         onChanged: onChanged,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-        ),
         style: GoogleFonts.inter(
-          fontSize: 16,
+          fontSize: 15,
           fontWeight: FontWeight.w500,
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.white
-              : const Color(0xFF1A1A1A),
+          color: isDark ? Colors.white : const Color(0xFF1A1A1A),
         ),
-        dropdownColor: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xFF2A2A2A)
-            : Colors.white,
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: AppColors.rectangleColor,
+        dropdownStyleData: DropdownStyleData(
+          maxHeight: 300,
+          width: MediaQuery.of(context).size.width * 0.9,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
+            border: Border.all(
+              color: isDark ? const Color(0xFF404040) : const Color(0xFFE5E5E5),
+            ),
+          ),
+          offset: const Offset(0, -8),
+          elevation: 4,
         ),
+        iconStyleData: IconStyleData(
+          icon: Icon(
+            Icons.expand_more_rounded,
+            color: AppColors.rectangleColor,
+            size: 20,
+          ),
+          iconSize: 20,
+        ),
+        buttonStyleData: const ButtonStyleData(
+          height: 50,
+          padding: EdgeInsets.symmetric(horizontal: 16),
+        ),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+          padding: EdgeInsets.symmetric(horizontal: 16),
+        ),
+        isExpanded: true,
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildTextField({
     required TextEditingController controller,

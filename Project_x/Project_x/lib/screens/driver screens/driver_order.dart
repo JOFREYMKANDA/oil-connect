@@ -548,7 +548,7 @@ class DriverOrdersScreen extends StatelessWidget {
               Icon(Icons.check_circle, color: Colors.green.shade700, size: 14),
               const SizedBox(width: 4),
               Text(
-                "Completed",
+                "iompleted",
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
