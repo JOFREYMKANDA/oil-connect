@@ -23,6 +23,7 @@ class TruckOwnerController extends GetxController {
   var isLoadingTruckCount = false.obs;
   var driverCount = 0.obs;
   var isLoadingDriverCount = false.obs;
+  Timer? _orderRefreshTimer;
 
   @override
   void onInit()async {
@@ -759,8 +760,15 @@ class TruckOwnerController extends GetxController {
 
   /// ✅ Start listening for new orders
   void startListeningForNewOrders() {
-    Timer.periodic(const Duration(minutes: 10), (timer) async {
+    _orderRefreshTimer?.cancel(); // Cancel existing timer if any
+    _orderRefreshTimer = Timer.periodic(const Duration(minutes: 10), (timer) async {
       await fetchOrders();
     });
+  }
+
+  @override
+  void onClose() {
+    _orderRefreshTimer?.cancel();
+    super.onClose();
   }
 }

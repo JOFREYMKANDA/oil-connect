@@ -84,6 +84,7 @@ class NewOrdersScreen extends StatelessWidget {
 
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: controller.orders.length,
                     itemBuilder: (context, index) {
                       var order = controller.orders[index];
