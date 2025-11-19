@@ -1,0 +1,20 @@
+                        -H/Users/Mkanda/Development/flutter/packages/flutter_tools/gradle/src/main/scripts
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=24
+-DANDROID_PLATFORM=android-24
+-DANDROID_ABI=arm64-v8a
+-DCMAKE_ANDROID_ARCH_ABI=arm64-v8a
+-DANDROID_NDK=/Users/Mkanda/Library/Android/sdk/ndk/28.2.13676358
+-DCMAKE_ANDROID_NDK=/Users/Mkanda/Library/Android/sdk/ndk/28.2.13676358
+-DCMAKE_TOOLCHAIN_FILE=/Users/Mkanda/Library/Android/sdk/ndk/28.2.13676358/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/Users/Mkanda/Library/Android/sdk/cmake/3.22.1/bin/ninja
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/Mkanda/Documents/oil-connect/Project_x/Project_x/android/app/build/intermediates/cxx/release/5f1x5n6f/obj/arm64-v8a
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/Users/Mkanda/Documents/oil-connect/Project_x/Project_x/android/app/build/intermediates/cxx/release/5f1x5n6f/obj/arm64-v8a
+-B/Users/Mkanda/Documents/oil-connect/Project_x/Project_x/android/app/.cxx/release/5f1x5n6f/arm64-v8a
+-GNinja
+-Wno-dev
+--no-warn-unused-cli
+-DCMAKE_BUILD_TYPE=release
+                        Build command args: []
+                        Version: 2
