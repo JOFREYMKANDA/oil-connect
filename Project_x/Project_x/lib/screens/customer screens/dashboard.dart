@@ -3,15 +3,11 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:intl/intl.dart';
 import 'package:oil_connect/backend/controllers/sharedOrderController.dart';
 import 'package:oil_connect/screens/customer%20screens/registered_station.dart';
-import 'package:oil_connect/screens/customer%20screens/route_selection.dart';
 import 'package:oil_connect/screens/customer%20screens/place_order_screen.dart';
-import 'package:oil_connect/widget/bottom_navigation.dart';
 import 'package:oil_connect/backend/controllers/gpsController.dart';
 import 'package:oil_connect/backend/controllers/truckLocationController.dart';
-import 'package:oil_connect/widget/cost_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:oil_connect/backend/controllers/authController.dart';
 import 'package:oil_connect/backend/controllers/orderController.dart';
@@ -20,7 +16,6 @@ import 'package:oil_connect/backend/controllers/stationController.dart';
 import 'package:oil_connect/backend/models/order_model.dart';
 import 'package:oil_connect/backend/models/station_model.dart';
 import 'package:oil_connect/utils/colors.dart';
-import 'package:oil_connect/widget/drawer_widget.dart';
 
 class CustomerDashboard extends StatefulWidget {
   const CustomerDashboard({super.key});

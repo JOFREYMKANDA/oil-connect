@@ -1,6 +1,5 @@
  import 'package:flutter/material.dart';
  import 'package:oil_connect/screens/truck%20owner%20screens/truck_owner_dashboard.dart';
- import 'package:oil_connect/widget/bottom_navigation.dart';
 
  class MainNavigation extends StatefulWidget {
    const MainNavigation({super.key});

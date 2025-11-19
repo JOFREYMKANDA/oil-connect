@@ -5,7 +5,6 @@ import 'package:oil_connect/backend/controllers/downloadController.dart';
 import 'package:oil_connect/backend/controllers/orderController.dart';
 import 'package:oil_connect/backend/models/order_model.dart';
 import 'package:oil_connect/screens/customer%20screens/OrderDetailsPage.dart';
-import 'package:oil_connect/screens/customer%20screens/live_location.dart';
 import 'package:oil_connect/utils/colors.dart';
 import 'package:oil_connect/widget/AppBar.dart';
 import 'package:url_launcher/url_launcher.dart';

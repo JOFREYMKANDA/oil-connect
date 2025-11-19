@@ -7,7 +7,6 @@ import 'package:mime/mime.dart';
 import 'package:oil_connect/backend/controllers/authController.dart';
 import 'package:oil_connect/utils/colors.dart';
 import 'package:oil_connect/backend/models/user_model.dart';
-import 'package:oil_connect/utils/url_utils.dart';
 import 'package:oil_connect/utils/shared_pref_utils.dart';
 
 /// Helper to open the edit sheet directly from other screens
@@ -116,15 +115,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       print("❌ Error checking authentication: $e");
       isAuthenticated.value = false;
     }
-  }
-
-  Future<void> _retryAuthentication() async {
-    print("🔄 Retrying authentication...");
-    await _checkAuthenticationStatus();
-    if (userController.user.value == null) {
-      await userController.fetchUserDetails();
-    }
-    _initializeUserData();
   }
 
   /// 🔄 Automatic Authentication Flow - No User Intervention Required

@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oil_connect/backend/controllers/authController.dart';
 import 'package:oil_connect/utils/colors.dart';
-import 'package:oil_connect/utils/constants.dart';
-import 'package:oil_connect/utils/text_style.dart';
 import 'package:oil_connect/widget/bottom_navigation.dart';
 
 class SuccessUploads extends StatefulWidget {

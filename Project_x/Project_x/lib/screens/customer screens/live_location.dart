@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oil_connect/backend/controllers/gpsController.dart';
 import 'package:oil_connect/backend/models/order_model.dart';
-import 'package:oil_connect/utils/colors.dart';
 import 'package:oil_connect/widget/AppBar.dart';
 
 class LiveLocationScreen extends StatefulWidget {

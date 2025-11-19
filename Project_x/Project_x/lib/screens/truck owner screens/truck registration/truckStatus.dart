@@ -31,7 +31,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
       ),
       body: Obx(() {
         if (messageController.isFetchingMessages.value) {
-          return Align(
+          return const Align(
             alignment: Alignment.topCenter,
             child: LinearProgressIndicator(color: AppColors.blueColor),
           );
@@ -47,7 +47,6 @@ class _MessageListScreenState extends State<MessageListScreen> {
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (context, index) {
             final msg = messageController.messages[index];
-            final isUnread = !msg.isRead;
             final isExpanded = index == expandedIndex;
 
             final time = DateFormat('dd MMM yyyy, hh:mm a')

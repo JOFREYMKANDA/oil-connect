@@ -4,7 +4,6 @@ import 'package:oil_connect/screens/login%20screens/registration.dart';
 import 'package:oil_connect/utils/constants.dart';
 import 'package:oil_connect/utils/text_style.dart';
 import 'package:oil_connect/utils/colors.dart';
-import 'package:oil_connect/widget/logo_widget.dart';
 
 class DecideButton extends StatefulWidget {
   const DecideButton({super.key});
@@ -16,7 +15,6 @@ class DecideButton extends StatefulWidget {
 class _DecideButtonState extends State<DecideButton> {
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // ✅ Check dark mode
 
     return Scaffold(
       body: SizedBox(

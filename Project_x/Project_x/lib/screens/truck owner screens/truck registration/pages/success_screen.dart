@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oil_connect/screens/truck%20owner%20screens/truck%20registration/truck_list.dart';
 import 'package:oil_connect/utils/colors.dart';
-import 'package:oil_connect/utils/constants.dart';
-import 'package:oil_connect/utils/text_style.dart';
-import 'package:oil_connect/widget/logo_widget.dart';
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});

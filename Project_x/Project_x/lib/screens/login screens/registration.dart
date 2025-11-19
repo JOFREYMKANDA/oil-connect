@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:oil_connect/screens/login%20screens/login.dart';
 import 'package:oil_connect/screens/login%20screens/email_otp_verification.dart';
 import 'package:oil_connect/utils/colors.dart';
-import 'package:oil_connect/utils/constants.dart';
 import 'package:oil_connect/utils/text_style.dart';
 import '../../backend/controllers/authController.dart';
 import '../../backend/models/user_model.dart';
@@ -252,11 +251,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.rectangleColor,
+                                      backgroundColor: AppColors.primaryColor,
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                     ),
-                                    child: Text(AppConstants.register.tr, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                                    child: const Text(
+                                      'Register', 
+                                      style: TextStyle(
+                                        fontSize: 16, 
+                                        fontWeight: FontWeight.w600, 
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
 
@@ -275,20 +281,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                                 const SizedBox(height: 8),
 
+                                // Log in prompt
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(AppConstants.alreadyHaveAccount.tr),
-                                    const SizedBox(width: 6),
+                                    Text("Already have an account? ", style: TextStyle(color: Colors.grey[700])),
                                     GestureDetector(
-                                      onTap: () => Get.to(() => const LoginScreen()),
-                                      child: Text(AppConstants.loginLabel.tr, style: AppTextStyles.link.copyWith(color: AppColors.rectangleColor)),
+                                      onTap: () => Get.to(const LoginScreen()),
+                                      child: Text('Log in', style: TextStyle(color: Colors.orange.shade700, fontWeight: FontWeight.w600)),
                                     ),
                                   ],
                                 ),
-
-                                const SizedBox(height: 16),
-                
                               ],
                             );
                     }),

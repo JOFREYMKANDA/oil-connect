@@ -12,7 +12,6 @@ import 'package:oil_connect/backend/services/sharedRouteService.dart';
 import 'package:oil_connect/utils/colors.dart';
 import 'package:oil_connect/widget/AppBar.dart';
 import 'package:oil_connect/priceFormula.dart';
-import 'package:oil_connect/screens/customer%20screens/dashboard.dart';
 import 'package:oil_connect/screens/customer%20screens/station_registration.dart';
 import 'package:oil_connect/widget/bottom_navigation.dart'; 
    
@@ -1203,7 +1202,6 @@ class _DatePickerContent extends StatefulWidget {
   final Function(DateTime) onDateSelected;
 
   const _DatePickerContent({
-    super.key,
     required this.selectedDate,
     required this.onDateSelected,
   });
@@ -1430,7 +1428,6 @@ class _DropdownOptionItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const _DropdownOptionItem({
-    super.key,
     required this.option,
     required this.isSelected,
     required this.onTap,
@@ -1487,7 +1484,6 @@ class _DropdownOptionItemWithIcon extends StatelessWidget {
   final VoidCallback onTap;
 
   const _DropdownOptionItemWithIcon({
-    super.key,
     required this.option,
     required this.isSelected,
     required this.onTap,

@@ -1288,25 +1288,6 @@ class NewOrdersScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(BuildContext context, String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-          ),
-          Text(
-            value.isNotEmpty ? value : "N/A",
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.blueAccent),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildModernDetailRow(BuildContext context, String title, String value, IconData icon) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),

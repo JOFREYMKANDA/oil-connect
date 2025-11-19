@@ -155,27 +155,6 @@ class _DriverScreenState extends State<DriverScreen> {
     });
   }
 
-  LatLngBounds _boundsFromLatLngs(LatLng origin, LatLng destination) {
-    double south = origin.latitude < destination.latitude
-        ? origin.latitude
-        : destination.latitude;
-    double west = origin.longitude < destination.longitude
-        ? origin.longitude
-        : destination.longitude;
-    double north = origin.latitude > destination.latitude
-        ? origin.latitude
-        : destination.latitude;
-    double east = origin.longitude > destination.longitude
-        ? origin.longitude
-        : destination.longitude;
-
-    const buffer = 0.01; // Adds padding to the bounds for smooth zoom
-    return LatLngBounds(
-      southwest: LatLng(south - buffer, west - buffer),
-      northeast: LatLng(north + buffer, east + buffer),
-    );
-  }
-
   Future<void> _drawPolyline(LatLng origin, LatLng destination,
       {String label = "route"}) async {
     const apiKey = AppConstants.kGoogleApiKey;
@@ -317,8 +296,9 @@ class _DriverScreenState extends State<DriverScreen> {
                   ),
                   onMapCreated: (controller) {
                     _mapController = controller;
-                    setState(() {
-                      _isMapReady = true;
+                    if (!_isMapReady)
+                      setState(() {
+                        _isMapReady = true;
                     });
                   },
                   markers: _markers.union(gpsController.markers),

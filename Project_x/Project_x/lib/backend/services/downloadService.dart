@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:oil_connect/backend/api/api_config.dart';
@@ -17,7 +15,7 @@ class DownloadService {
     required String fileNamePrefix,
     required String fileId,
   }) async {
-    final token = await SharedPrefsUtil().getToken();
+    final token = SharedPrefsUtil().getToken();
 
     if (token == null || token.isEmpty) {
       Get.snackbar("Authentication Error", "Please login again.",

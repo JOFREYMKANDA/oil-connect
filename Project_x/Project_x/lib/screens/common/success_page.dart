@@ -100,7 +100,7 @@ class SuccessPage extends StatelessWidget {
           height: imageSize ?? 120,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.green.shade50,
+            color: AppColors.primaryColor.withOpacity(0.5),
             boxShadow: [
               BoxShadow(
                 color: Colors.green.withOpacity(0.1),

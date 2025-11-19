@@ -6,8 +6,6 @@ import 'package:oil_connect/screens/customerSupport_screen.dart';
 import 'package:oil_connect/screens/profile_screen.dart';
 import 'package:oil_connect/screens/truck%20owner%20screens/truck%20registration/truck_list.dart';
 import 'package:oil_connect/utils/colors.dart';
-import 'package:oil_connect/utils/constants.dart';
-import 'package:oil_connect/utils/text_style.dart';
 import 'package:oil_connect/screens/settings_screens.dart';
 import 'package:oil_connect/screens/customer%20screens/orders.dart';
 

@@ -71,7 +71,7 @@ class _TruckListScreenState extends State<TruckListScreen> {
     final q = _searchQuery.value.toLowerCase();
     final filter = _statusFilter.value.toLowerCase();
     return all.where((v) {
-      final name = (v.vehicleType ?? '').toLowerCase();
+      final name = (v.vehicleType).toLowerCase();
       final plate = (v.vehicleIdentity ?? '').toString().toLowerCase();
       final status = (v.status ?? '').toLowerCase();
 
@@ -384,7 +384,7 @@ class _TruckListScreenState extends State<TruckListScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(vehicle.vehicleType ?? 'Truck', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                        Text(vehicle.vehicleType, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 6),
                         Text(vehicle.vehicleIdentity?.toString() ?? 'N/A', style: const TextStyle(color: Colors.grey)),
                       ],
@@ -504,7 +504,7 @@ class _ModernTruckCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: Text(vehicle.vehicleType ?? 'Truck', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
+                      Expanded(child: Text(vehicle.vehicleType, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

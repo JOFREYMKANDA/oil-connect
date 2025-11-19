@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,13 +21,11 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
     super.initState();
 
     gpsController.onNewPosition = (LatLng pos) async {
-      if (mapController != null) {
-        final screenPoint = await mapController.getScreenCoordinate(pos);
-        setState(() {
-          gpsMarkerOffset = Offset(screenPoint.x.toDouble(), screenPoint.y.toDouble());
-        });
-      }
-    };
+      final screenPoint = await mapController.getScreenCoordinate(pos);
+      setState(() {
+        gpsMarkerOffset = Offset(screenPoint.x.toDouble(), screenPoint.y.toDouble());
+      });
+        };
   }
 
   @override

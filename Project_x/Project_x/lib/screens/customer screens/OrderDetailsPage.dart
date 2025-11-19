@@ -74,19 +74,6 @@ final DownloadController downloadController =
     return NumberFormat("#,###").format(number);
   }
 
-// ✅ Function to format the delivery date (only show date, remove time)
-  String _formatDate(String? dateTime) {
-    if (dateTime == null || dateTime.isEmpty) return "N/A";
-
-    try {
-      final utcDate = DateTime.parse(dateTime).toUtc();
-      final localDate = utcDate.toLocal();
-      final formatter = DateFormat('yyyy-MM-dd HH:mm');
-      return formatter.format(localDate);
-    } catch (e) {
-      return "Invalid Date";
-    }
-  }
 
     /// ✅ Function to Get Status Color Dynamically
 Color getStatusColor(String status) {
@@ -182,20 +169,6 @@ Future<void> _shareVehicleCard() async {
   }
 }
 
-
-  // Modern button style with elevation and shadow
-  ButtonStyle _getPrimaryButtonStyle() {
-    return ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primaryColor,
-      foregroundColor: Colors.white,
-      elevation: 2,
-      // shadowColor: AppColors.primaryColor,
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
-  }
 
   // Secondary button style for less important actions
   ButtonStyle _getSecondaryButtonStyle() {

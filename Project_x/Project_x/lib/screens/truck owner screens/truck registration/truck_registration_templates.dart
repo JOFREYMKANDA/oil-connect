@@ -447,7 +447,7 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                     ),
                   );
                 }),
-                const SizedBox(height: 24),
+                const SizedBox(height: 10),
 
                 // Document Upload Section
                 _buildSectionTitle("Required Documents", "Upload the required documents for vehicle registration"),
@@ -456,27 +456,27 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.rectangleColor.withOpacity(0.1),
+                    color: AppColors.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: AppColors.rectangleColor.withOpacity(0.3),
+                      color: AppColors.primaryColor.withOpacity(0.3),
                     ),
                   ),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.info_outline,
                         size: 20,
-                        color: AppColors.rectangleColor,
+                        color: AppColors.primaryColor,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           'Maximum file size: 1MB per document. Large files will be rejected.',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.rectangleColor,
+                            color: AppColors.primaryColor,
                           ),
                         ),
                       ),
@@ -673,17 +673,17 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                         decoration: BoxDecoration(
-                          color: AppColors.rectangleColor.withOpacity(0.1),
+                          color: AppColors.primaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
-                                color: AppColors.rectangleColor,
+                                color: AppColors.primaryColor,
                                 strokeWidth: 2,
                               ),
                             ),
@@ -691,7 +691,7 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                             Text(
                               'Processing...',
                               style: GoogleFonts.inter(
-                                color: AppColors.rectangleColor,
+                                color: AppColors.primaryColor,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -706,7 +706,7 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                     child: ElevatedButton(
                       onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.rectangleColor,
+                        backgroundColor: AppColors.primaryColor,
                         foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(

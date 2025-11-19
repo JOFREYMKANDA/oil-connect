@@ -418,7 +418,7 @@ class _LoginFormState extends State<LoginForm> {
                   height: 52,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: _loading ? AppColors.rectangleColor.withOpacity(0.7) : AppColors.rectangleColor,
+                      color: _loading ? AppColors.primaryColor.withOpacity(0.7) : AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: _loading ? [] : [
                         BoxShadow(

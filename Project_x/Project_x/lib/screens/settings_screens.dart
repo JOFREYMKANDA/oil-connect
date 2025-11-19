@@ -12,8 +12,8 @@ class SettingsScreen extends StatelessWidget {
   final GetStorage _storage = GetStorage();
   final SettingsController settingsController = Get.find<SettingsController>();
 
-  var mapType = MapType.normal.obs;
-  var language = 'en'.obs;
+  final mapType = MapType.normal.obs;
+  final language = 'en'.obs;
 
   /// **Load Preferences from Storage**
   void _loadPreferences() {
