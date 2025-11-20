@@ -212,7 +212,82 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                               phoneError.value = result['message'] ?? 'This phone number is already registered';
                                               // Focus phone field so user sees the error immediately
                                               phoneFocus.requestFocus();
-                                            } else {
+                                            } else if (result['type'] == 'otp_service_error') {
+                                              print('❌ [DEBUG] OTP service error detected - showing snackbar');
+                                              // Show the OTP service error snackbar
+                                              final title = result['title'] ?? 'Service Error';
+                                              final message = result['message'] ?? 'We encountered an issue. Please try again.';
+                                              
+                                              // Show snackbar using both GetX and ScaffoldMessenger as fallback
+                                              // First try GetX
+                                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                Future.delayed(const Duration(milliseconds: 200), () {
+                                                  try {
+                                                    print('🔔 [DEBUG] Attempting to show GetX snackbar: $title');
+                                                    Get.snackbar(
+                                                      title,
+                                                      message,
+                                                      backgroundColor: Colors.orange,
+                                                      colorText: Colors.white,
+                                                      snackPosition: SnackPosition.TOP,
+                                                      duration: const Duration(seconds: 6),
+                                                      margin: const EdgeInsets.all(16),
+                                                      borderRadius: 8,
+                                                      isDismissible: true,
+                                                      dismissDirection: DismissDirection.horizontal,
+                                                      forwardAnimationCurve: Curves.easeOutBack,
+                                                    );
+                                                    print('✅ [DEBUG] GetX Snackbar call completed');
+                                                  } catch (e, stackTrace) {
+                                                    print('❌ [DEBUG] Error showing GetX snackbar: $e');
+                                                    print('❌ [DEBUG] Stack trace: $stackTrace');
+                                                  }
+                                                });
+                                                
+                                                // Also try ScaffoldMessenger as primary method (more reliable)
+                                                if (mounted && context.mounted) {
+                                                  Future.delayed(const Duration(milliseconds: 300), () {
+                                                    try {
+                                                      print('🔔 [DEBUG] Attempting to show ScaffoldMessenger snackbar: $title');
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                          content: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                title,
+                                                                style: const TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 16,
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                              const SizedBox(height: 4),
+                                                              Text(
+                                                                message,
+                                                                style: const TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          backgroundColor: Colors.orange,
+                                                          duration: const Duration(seconds: 6),
+                                                          behavior: SnackBarBehavior.floating,
+                                                          margin: const EdgeInsets.all(16),
+                                                          elevation: 6,
+                                                        ),
+                                                      );
+                                                      print('✅ [DEBUG] ScaffoldMessenger Snackbar shown');
+                                                    } catch (e2) {
+                                                      print('❌ [DEBUG] Error showing ScaffoldMessenger snackbar: $e2');
+                                                    }
+                                                  });
+                                                }
+                                              });
+                                               } else {
                                               print('❌ [DEBUG] Other registration error: ${result['message']}');
                                               // Show generic error for other types
                                               String roleText = widget.role.toLowerCase() == 'truckowner' ? 'truck owner' : 'customer';

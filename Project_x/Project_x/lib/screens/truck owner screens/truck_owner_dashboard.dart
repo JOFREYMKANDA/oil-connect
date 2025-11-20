@@ -162,10 +162,10 @@ class _TruckOwnerDashboardScreenState extends State<TruckOwnerDashboardScreen> {
   Widget _statTile(String label, String value, IconData icon, Color color) {
     final bool isLoading = value.trim() == '...';
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -176,34 +176,36 @@ class _TruckOwnerDashboardScreenState extends State<TruckOwnerDashboardScreen> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: color, size: 22),
+            child: Icon(icon, color: color, size: 18),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 6),
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: 22,
+              fontSize: 18,
               fontWeight: FontWeight.w700,
               color: isLoading ? Colors.grey[400] : color,
               height: 1.2,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 13,
+              fontSize: 11,
               fontWeight: FontWeight.w500,
               color: Colors.grey[600],
               letterSpacing: -0.2,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -213,14 +215,14 @@ class _TruckOwnerDashboardScreenState extends State<TruckOwnerDashboardScreen> {
   Widget _actionCard(String title, IconData icon, Color color, VoidCallback onTap, {int? badge}) {
     return Card(
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
-          height: 120,
+          width: double.infinity,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -230,61 +232,61 @@ class _TruckOwnerDashboardScreenState extends State<TruckOwnerDashboardScreen> {
           child: Stack(
             children: [
               Positioned(
-                right: -10,
-                bottom: -10,
+                right: -8,
+                bottom: -8,
                 child: Opacity(
                   opacity: 0.2,
-                  child: Icon(icon, size: 100, color: Colors.white),
+                  child: Icon(icon, size: 70, color: Colors.white),
                 ),
               ),
+              if (badge != null && badge > 0)
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      badge.toString(),
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (badge != null && badge > 0)
-                      Positioned(
-                        top: 12,
-                        right: 12,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            badge.toString(),
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
                     Text(
                       title,
                       style: GoogleFonts.inter(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                         letterSpacing: -0.3,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
                         Text(
                           'View details',
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: 11,
                             color: Colors.white.withOpacity(0.8),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 14),
+                        const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 12),
                       ],
                     ),
                   ],
@@ -356,114 +358,138 @@ class _TruckOwnerDashboardScreenState extends State<TruckOwnerDashboardScreen> {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Greeting Section
-              Text(
-                'Welcome back 👋',
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                  fontWeight: FontWeight.w500,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final availableHeight = constraints.maxHeight;
+            // Calculate heights: Greeting (~40), Stats Grid (~110), Spacing (~28), Quick Actions header (~26), Action cards spacing (~16)
+            // Remaining space for 3 action cards
+            const usedSpace = 40 + 110 + 28 + 26 + 16; // Fixed space for other elements
+            final remainingSpace = availableHeight - usedSpace - 24; // 24 for padding
+            final actionCardHeight = (remainingSpace / 3).clamp(70.0, 120.0);
+            
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: availableHeight,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Greeting Section
+                      Text(
+                        'Welcome back 👋',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Obx(() {
+                        if (userController.isLoading.value) {
+                          return const SizedBox(
+                            height: 24,
+                            child: ShimmerLoader(width: 100),
+                          );
+                        }
+                        final user = userController.user.value;
+                        final name = user?.firstname.isNotEmpty == true ? user!.firstname : 'Driver';
+                        return Text(
+                          'Hi, $name!',
+                          style: GoogleFonts.inter(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                            letterSpacing: -0.5,
+                          ),
+                        );
+                      }),
+                      const SizedBox(height: 12),
+
+                      // Stats Grid
+                      GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                        childAspectRatio: 0.85,
+                        children: [
+                          Obx(() => _statTile(
+                            'Trucks',
+                            truckOwnerController.isLoadingTruckCount.value ? '...' : truckOwnerController.truckCount.value.toString(),
+                            Icons.local_shipping_rounded,
+                            AppColors.primaryColor,
+                          )),
+                          Obx(() => _statTile(
+                            'Drivers',
+                            truckOwnerController.isLoadingDriverCount.value ? '...' : truckOwnerController.driverCount.value.toString(),
+                            Icons.people_rounded,
+                            Colors.blue,
+                          )),
+                          Obx(() => _statTile(
+                            'Orders',
+                            truckOwnerController.isLoading.value ? '...' : truckOwnerController.orders.length.toString(),
+                            Icons.receipt_long_rounded,
+                            Colors.orange,
+                          )),
+                        ],
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Quick Actions
+                      Text(
+                        'Quick Actions',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black87,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Action Cards with calculated height
+                      SizedBox(
+                        height: actionCardHeight,
+                        child: _actionCard(
+                          'Manage Trucks',
+                          FontAwesomeIcons.truck,
+                          AppColors.primaryColor,
+                          () => Get.to(() => const TruckListScreen()),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        height: actionCardHeight,
+                        child: _actionCard(
+                          'Manage Drivers',
+                          FontAwesomeIcons.users,
+                          const Color(0xFF2196F3),
+                          () => Get.to(const DriversListScreen()),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        height: actionCardHeight,
+                        child: Obx(() => _actionCard(
+                          'New Requests',
+                          FontAwesomeIcons.clipboardList,
+                          const Color(0xFFFF9800),
+                          () => Get.to(() => NewOrdersScreen()),
+                          badge: truckOwnerController.orders.length,
+                        )),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 8),
-              Obx(() {
-                if (userController.isLoading.value) {
-                  return const SizedBox(
-                    height: 28,
-                    child: ShimmerLoader(width: 120),
-                  );
-                }
-                final user = userController.user.value;
-                final name = user?.firstname.isNotEmpty == true ? user!.firstname : 'Driver';
-                return Text(
-                  'Hi, $name!',
-                  style: GoogleFonts.inter(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
-                    letterSpacing: -0.5,
-                  ),
-                );
-              }),
-              const SizedBox(height: 24),
-
-              // Stats Grid
-              GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 3,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 0.75,
-                children: [
-                  Obx(() => _statTile(
-                    'Trucks',
-                    truckOwnerController.isLoadingTruckCount.value ? '...' : truckOwnerController.truckCount.value.toString(),
-                    Icons.local_shipping_rounded,
-                    AppColors.primaryColor,
-                  )),
-                  Obx(() => _statTile(
-                    'Drivers',
-                    truckOwnerController.isLoadingDriverCount.value ? '...' : truckOwnerController.driverCount.value.toString(),
-                    Icons.people_rounded,
-                    Colors.blue,
-                  )),
-                  Obx(() => _statTile(
-                    'Orders',
-                    truckOwnerController.isLoading.value ? '...' : truckOwnerController.orders.length.toString(),
-                    Icons.receipt_long_rounded,
-                    Colors.orange,
-                  )),
-                ],
-              ),
-
-              const SizedBox(height: 32),
-
-              // Quick Actions
-              Text(
-                'Quick Actions',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
-                  letterSpacing: -0.5,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              Column(
-                children: [
-                  _actionCard(
-                    'Manage Trucks',
-                    FontAwesomeIcons.truck,
-                    AppColors.primaryColor,
-                    () => Get.to(() => const TruckListScreen()),
-                  ),
-                  const SizedBox(height: 12),
-                  _actionCard(
-                    'Manage Drivers',
-                    FontAwesomeIcons.users,
-                    const Color(0xFF2196F3),
-                    () => Get.to(const DriversListScreen()),
-                  ),
-                  const SizedBox(height: 12),
-                  Obx(() => _actionCard(
-                    'New Requests',
-                    FontAwesomeIcons.clipboardList,
-                    const Color(0xFFFF9800),
-                    () => Get.to(() => NewOrdersScreen()),
-                    badge: truckOwnerController.orders.length,
-                  )),
-                ],
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

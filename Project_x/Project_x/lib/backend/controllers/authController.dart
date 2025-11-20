@@ -16,6 +16,7 @@ import '../models/user_model.dart';
 import '../services/authServices.dart';
 import 'package:oil_connect/screens/common/success_page.dart';
 import 'package:oil_connect/utils/colors.dart';
+import 'package:oil_connect/utils/snackbar.dart';
 
 class RegisterController extends GetxController {
   var isLoading = false.obs;
@@ -60,11 +61,13 @@ class RegisterController extends GetxController {
         return data;
       } else {
         String errorMsg = "Registration failed";
+        Map<String, dynamic>? responseData;
+        
         try {
-          final data = jsonDecode(response.body);
-          errorMsg = data['message'] ??
-              data['error'] ??
-              data['msg'] ??
+          responseData = jsonDecode(response.body) as Map<String, dynamic>;
+          errorMsg = responseData['message'] ??
+              responseData['error'] ??
+              responseData['msg'] ??
               "Registration failed";
           print('❌ [DEBUG] Registration failed: $errorMsg');
           print('❌ [DEBUG] Full response body: ${response.body}');
@@ -101,6 +104,53 @@ class RegisterController extends GetxController {
             '🔍 [DEBUG] - Contains "taken": ${errorMsg.toLowerCase().contains('taken')}');
 
         final errorMsgLower = errorMsg.toLowerCase();
+        
+        // Check for OTP sending failures (backend service issues)
+        // This catches errors like "Failed to send OTP. Registration aborted." with "Unauthorized"
+        final errorType = responseData?['error']?.toString().toLowerCase() ?? '';
+        final isUnauthorized = response.statusCode == 401 || errorType.contains('unauthorized');
+        final isOtpFailure = errorMsgLower.contains('failed to send otp') ||
+            errorMsgLower.contains('otp failed to send') ||
+            (errorMsgLower.contains('otp') && errorMsgLower.contains('failed')) ||
+            errorMsgLower.contains('registration aborted');
+        
+        // Enhanced debug logging for OTP error detection
+        print('🔍 [DEBUG] OTP Error Detection:');
+        print('🔍 [DEBUG] - Status code: ${response.statusCode}');
+        print('🔍 [DEBUG] - Error type from response: "$errorType"');
+        print('🔍 [DEBUG] - Error message: "$errorMsg"');
+        print('🔍 [DEBUG] - isUnauthorized: $isUnauthorized');
+        print('🔍 [DEBUG] - isOtpFailure: $isOtpFailure');
+        print('🔍 [DEBUG] - Contains "failed to send otp": ${errorMsgLower.contains('failed to send otp')}');
+        print('🔍 [DEBUG] - Contains "registration aborted": ${errorMsgLower.contains('registration aborted')}');
+        
+        if (isOtpFailure || isUnauthorized) {
+          print('✅ [DEBUG] OTP error detected! Processing...');
+          String otpErrorMessage;
+          String otpErrorTitle;
+          
+          if (isUnauthorized && isOtpFailure) {
+            print('🔔 [DEBUG] OTP service authentication failed (Unauthorized) - returning error object');
+            otpErrorTitle = "Service Temporarily Unavailable";
+            otpErrorMessage = "We're unable to send the verification code at the moment. Please try again in a few minutes or contact support if the issue persists.";
+          } else if (isOtpFailure) {
+            print('🔔 [DEBUG] OTP sending failed - returning error object');
+            otpErrorTitle = "Verification Code Error";
+            otpErrorMessage = "We encountered an issue sending the verification code. Please try again in a moment.";
+          } else {
+            print('🔔 [DEBUG] Unauthorized access error - returning error object');
+            otpErrorTitle = "Authentication Error";
+            otpErrorMessage = "There was an authentication issue. Please try again or contact support if the problem continues.";
+          }
+          
+          // Return error object so registration screen can handle it
+          return {
+            'error': true,
+            'type': 'otp_service_error',
+            'title': otpErrorTitle,
+            'message': otpErrorMessage,
+          };
+        }
         
         // Check for phone number already exists first (more specific)
         if (errorMsgLower.contains('phone number already registered') ||
@@ -636,17 +686,154 @@ class RegisterController extends GetxController {
     }
   }
 
-  /// Resend email OTP
+  /// Resend email OTP — robust handling to show user-friendly error/success messages
   Future<void> resendEmailOtp(String userId, String email) async {
     isLoading.value = true;
     try {
-      await _authService.resendEmailOtp(userId, email);
-    } catch (e) {
-      print('❌ [DEBUG] Resend email OTP failed: $e');
-      rethrow;
+      final dynamic result = await _authService.resendEmailOtp(userId, email);
+
+      // If the auth service returns an http.Response
+      if (result is http.Response) {
+        print('📡 [DEBUG] resendEmailOtp response status: ${result.statusCode}');
+        print('📡 [DEBUG] resendEmailOtp response body: ${result.body}');
+
+        if (result.statusCode == 200 || result.statusCode == 201) {
+          String successMsg = "Verification code sent to $email.";
+          try {
+            final parsed = jsonDecode(result.body);
+            successMsg = parsed['message'] ?? parsed['msg'] ?? successMsg;
+          } catch (_) {}
+          Get.snackbar("OTP Sent", successMsg,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
+          return;
+        } else {
+          String errorMsg;
+          try {
+            final parsed = jsonDecode(result.body);
+            errorMsg = parsed['message'] ?? parsed['error'] ?? parsed['msg'] ?? result.body;
+          } catch (_) {
+            errorMsg = result.body.isNotEmpty ? result.body : "Failed to resend OTP";
+          }
+
+          _showOtpResendError(errorMsg, result.statusCode);
+          return;
+        }
+      }
+
+      // If the auth service returns a Map (common for wrapped JSON)
+      if (result is Map<String, dynamic>) {
+        print('📡 [DEBUG] resendEmailOtp map result: $result');
+        final success = result['success'] == true || (result['status'] == 'success');
+        if (success) {
+          final msg = result['message'] ?? 'Verification code sent to $email.';
+          Get.snackbar("OTP Sent", msg,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
+          return;
+        } else {
+          final errorMsg = result['message'] ?? result['error'] ?? 'Failed to resend OTP';
+          _showOtpResendError(errorMsg, result['statusCode'] is int ? result['statusCode'] : null);
+          return;
+        }
+      }
+
+      // If service returned boolean true/false or null
+      if (result is bool) {
+        if (result) {
+          Get.snackbar("OTP Sent", "Verification code sent to $email.",
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
+        } else {
+          _showOtpResendError("Failed to resend verification code. Please try again.", null);
+        }
+        return;
+      }
+
+      // Unknown return type — fallback
+      print('⚠️ [DEBUG] resendEmailOtp unknown result type: ${result.runtimeType}');
+      Get.snackbar("OTP Error",
+          "Unable to resend verification code. Please try again later.",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
+    } on SocketException catch (se) {
+      // Network issue
+      print('❌ [DEBUG] resendEmailOtp network error: $se');
+      Get.snackbar("Connection Error",
+          "No internet connection. Please check your network and try again.",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
+    } catch (e, st) {
+      print('❌ [DEBUG] resendEmailOtp unexpected error: $e\n$st');
+      // Best effort to extract message
+      String msg = e.toString();
+      if (msg.contains('403') || msg.toLowerCase().contains('forbidden')) {
+        msg = "You are not permitted to perform this action.";
+      } else if (msg.toLowerCase().contains('timeout')) {
+        msg = "Request timed out. Please try again.";
+      } else {
+        msg = "Failed to resend verification code. Please try again later.";
+      }
+      Get.snackbar("OTP Error", msg,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
     } finally {
       isLoading.value = false;
     }
+  }
+
+  /// Private helper used by resendEmailOtp to map error text/status to a user-facing snackbar
+  void _showOtpResendError(String errorMsg, [int? statusCode]) {
+    final lower = errorMsg.toLowerCase();
+    print('🔍 [DEBUG] OTP resend error analysis: status=$statusCode, message="$errorMsg"');
+
+    // Rate limit / too many requests
+    if (lower.contains('too many') ||
+        lower.contains('rate limit') ||
+        lower.contains('try again later') ||
+        lower.contains('limit exceeded')) {
+      Get.snackbar("Too Many Requests",
+          "You have requested OTP too many times. Please wait a few minutes before trying again.",
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
+      return;
+    }
+
+    // Invalid / not found / email not registered
+    if (lower.contains('invalid') ||
+        lower.contains('not found') ||
+        lower.contains('no user') ||
+        lower.contains('user not found') ||
+        lower.contains('email not registered') ||
+        lower.contains('not registered')) {
+      Get.snackbar("Email Not Found",
+          "We couldn't find an account with that email. Please check the email and try again.",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
+      return;
+    }
+
+    // Server error
+    if (statusCode != null && statusCode >= 500 || lower.contains('server error')) {
+      Get.snackbar("Server Error",
+          "Server error occurred while trying to resend OTP. Please try again later.",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
+      return;
+    }
+
+    // Generic fallback showing backend message
+    Get.snackbar("OTP Error", errorMsg,
+        backgroundColor: Colors.red, colorText: Colors.white, snackPosition: SnackPosition.TOP);
   }
 
   /// ✅ Validate and ensure proper role separation

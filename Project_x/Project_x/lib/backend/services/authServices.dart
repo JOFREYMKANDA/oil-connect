@@ -175,7 +175,7 @@ class AuthService {
   }
 
   /// Resend email OTP
-  Future<void> resendEmailOtp(String userId, String email) async {
+  Future<http.Response> resendEmailOtp(String userId, String email) async {
     try {
       print('📧 [DEBUG] Resending email OTP for userId: $userId');
       print('📧 [DEBUG] Email: $email');
@@ -211,13 +211,8 @@ class AuthService {
         print('🔄 [DEBUG] Fallback resend response body: ${response.body}');
       }
 
-      if (response.statusCode == 200) {
-        print('✅ [DEBUG] OTP resend successful');
-      } else {
-        final data = jsonDecode(response.body);
-        print('❌ [DEBUG] OTP resend failed: ${data['message'] ?? 'Unknown error'}');
-        throw Exception(data['message'] ?? 'Failed to resend OTP');
-      }
+      // Return the response instead of throwing - let controller handle it
+      return response;
     } catch (e) {
       print('❌ [DEBUG] OTP resend exception: $e');
       rethrow;

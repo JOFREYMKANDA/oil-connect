@@ -419,24 +419,6 @@ class _TruckOwnerOrdersScreenState extends State<TruckOwnerOrdersScreen> {
     );
   }
 
-
-  /// ✅ Contact Button (UI ONLY)
-  // Widget _contactButton(String title, Color color) {
-  //   return ElevatedButton.icon(
-  //     style: ElevatedButton.styleFrom(
-  //       backgroundColor: color.withOpacity(0.2),
-  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-  //       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-  //       elevation: 0,
-  //     ),
-  //     icon: Icon(title.contains("Call") ? Icons.call : Icons.message, color: color),
-  //     label: Text(title, style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold)),
-  //     onPressed: () {
-  //       // TODO: Implement Call/SMS Functionality
-  //     },
-  //   );
-  // }
-
   /// ✅ Status Color Helper
   Color getStatusColor(String? status) {
     switch (status?.toLowerCase() ?? "") {
