@@ -33,18 +33,27 @@ class NewOrdersScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      IconButton(
-                        onPressed: () => Get.back(),
-                        icon: Icon(
-                          Icons.arrow_back_ios_rounded,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : const Color(0xFF1A1A1A),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Get.back(),
+                          borderRadius: BorderRadius.circular(24),
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.arrow_back_ios_rounded,
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : const Color(0xFF1A1A1A),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "New Orders",
+                        "New Requests",
                         style: GoogleFonts.inter(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -57,7 +66,7 @@ class NewOrdersScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "Available orders for your trucks",
+                    "Available requests for your trucks",
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,

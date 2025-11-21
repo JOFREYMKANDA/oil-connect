@@ -142,71 +142,109 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackAppBar(
+      appBar: const BackAppBar(
         title: 'New order',
-        actions: [
-          TextButton(
-            onPressed:  _placeOrder,
-            child:const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.add, // or any other icon you prefer
-                  color: AppColors.primaryColor,
-                ),
-                SizedBox(width: 8), // spacing between icon and text
-                Text(
-                  'Place order',
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Custom Message Container
+                  Obx(() => _showMessage.value ? _buildMessageContainer() : const SizedBox.shrink()),
+                  
+                  // Station Selection Section
+                  _buildStationSelection(),
+                  const SizedBox(height: 30),
+
+                  // Route Type Selection
+                  _buildRouteTypeSelection(),
+                  const SizedBox(height: 30),
+
+                  // Fuel Type Selection
+                  _buildFuelTypeSelection(),
+                  const SizedBox(height: 30),
+
+                  // Depot Selection
+                  _buildDepotSelection(),
+                  const SizedBox(height: 30),
+
+                  // Volume Input
+                  _buildVolumeInput(),
+                  const SizedBox(height: 30),
+
+                  // Delivery Date
+                  _buildDeliveryDate(),
+                  const SizedBox(height: 30),
+
+                  // Price Display
+                  if (calculatedPrice != null) _buildPriceDisplay(),
+                  if (calculatedPrice != null) const SizedBox(height: 30),
+
+                  // Action Buttons
+                  // _buildActionButtons(),
+                  // const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+          // Bottom Place Order Button
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF1A1A1A)
+                  : Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, -5),
                 ),
               ],
             ),
+            child: SafeArea(
+              child: SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: isProcessing ? null : _placeOrder,
+                  icon: isProcessing
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                  label: Text(
+                    isProcessing ? 'Processing...' : 'Place order',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 0,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ],),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Custom Message Container
-            Obx(() => _showMessage.value ? _buildMessageContainer() : const SizedBox.shrink()),
-            
-            // Station Selection Section
-            _buildStationSelection(),
-            const SizedBox(height: 30),
-
-            // Route Type Selection
-            _buildRouteTypeSelection(),
-            const SizedBox(height: 30),
-
-            // Fuel Type Selection
-            _buildFuelTypeSelection(),
-            const SizedBox(height: 30),
-
-            // Depot Selection
-            _buildDepotSelection(),
-            const SizedBox(height: 30),
-
-            // Volume Input
-            _buildVolumeInput(),
-            const SizedBox(height: 30),
-
-            // Delivery Date
-            _buildDeliveryDate(),
-            const SizedBox(height: 30),
-
-            // Price Display
-            if (calculatedPrice != null) _buildPriceDisplay(),
-            if (calculatedPrice != null) const SizedBox(height: 30),
-
-            // Action Buttons
-            // _buildActionButtons(),
-            // const SizedBox(height: 20),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -279,7 +317,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.rectangleColor,
+                      backgroundColor: AppColors.primaryColor,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
